@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm';
 import { Logger } from 'pino';
-import { SaleEvent as SaleEventType , TaxPaymentEvent, } from './types';
+import { SaleEvent as SaleEventType , TaxPaymentEvent, Amendment as AmendmentType} from './types';
 import { SaleEvent } from './entity/SaleEvent';
 import { SaleItem } from './entity/SaleItem';
 import { TaxPayment } from './entity/TaxPayment';
+import { Amendment } from './entity/Amendment';
 
 export class TaxService {
   private dataSource: DataSource;
@@ -43,6 +44,27 @@ export class TaxService {
 
     await taxPaymentRepo.save(taxPayment);
     this.logger.info({ msg: 'Tax payment saved successfully', date: event.date, amount: event.amount });
+  }
+
+  async addAmendment(amendment: AmendmentType): Promise<void> {
+    this.logger.debug('Adding amendment', { 
+      invoiceId: amendment.invoiceId, 
+      itemId: amendment.itemId 
+    });
+    
+    const amendmentRepo = this.dataSource.getRepository(Amendment);
+    const newAmendment = new Amendment();
+    newAmendment.date = new Date(amendment.date);
+    newAmendment.invoiceId = amendment.invoiceId;
+    newAmendment.itemId = amendment.itemId;
+    newAmendment.cost = amendment.cost;
+    newAmendment.taxRate = amendment.taxRate;
+
+    await amendmentRepo.save(newAmendment);
+    this.logger.info('Amendment saved successfully', { 
+      invoiceId: amendment.invoiceId, 
+      itemId: amendment.itemId 
+    });
   }
 
 }

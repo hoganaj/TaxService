@@ -20,6 +20,17 @@ export function isValidTransaction(transaction: any): boolean {
   return false;
 }
 
+export function isValidAmendment(amendment: any): boolean {
+  return Boolean(
+    amendment.date && 
+    isValidDate(amendment.date) &&
+    amendment.invoiceId && 
+    amendment.itemId && 
+    typeof amendment.cost === 'number' && 
+    typeof amendment.taxRate === 'number'
+  );
+}
+
 function isValidDate(dateString: string): boolean {
   const date = new Date(dateString);
   return !isNaN(date.getTime());
