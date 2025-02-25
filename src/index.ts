@@ -1,15 +1,17 @@
 import "reflect-metadata";
 import express from "express";
 import { AppDataSource } from "./data-source";
+import { registerRoutes } from "./routes";
+import logger from "./logger";
 
 const app = express();
 app.use(express.json());
 
 AppDataSource.initialize()
-.then(() => {
-  console.log("Database connected!");
-})
-.catch((err) => console.error("Database connection error:", err));
+.then(() => logger.info("Database connected!"))
+.catch((err) => logger.error("Database connection error:", err));
+
+registerRoutes(app, AppDataSource);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
