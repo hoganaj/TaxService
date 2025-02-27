@@ -1,9 +1,9 @@
 import { DataSource } from 'typeorm';
-import { TaxService } from './TaxService';
-import { SaleEvent } from './entity/SaleEvent';
-import { TaxPayment } from './entity/TaxPayment';
-import { Amendment } from './entity/Amendment';
-import { SaleItem } from './entity/SaleItem';
+import { TaxService } from '../service/TaxService';
+import { SaleEvent } from '../entity/SaleEvent';
+import { TaxPayment } from '../entity/TaxPayment';
+import { Amendment } from '../entity/Amendment';
+import { SaleItem } from '../entity/SaleItem';
 import pino from 'pino';
 
 const logger = pino({ level: 'silent' });

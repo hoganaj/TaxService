@@ -1,10 +1,10 @@
 import { DataSource, LessThanOrEqual } from 'typeorm';
 import { Logger } from 'pino';
-import { SaleEvent as SaleEventType , TaxPaymentEvent, Amendment as AmendmentType} from './types';
-import { SaleEvent } from './entity/SaleEvent';
-import { SaleItem } from './entity/SaleItem';
-import { TaxPayment } from './entity/TaxPayment';
-import { Amendment } from './entity/Amendment';
+import { SaleEvent as SaleEventType , TaxPaymentEvent, Amendment as AmendmentType} from '../utils/types';
+import { SaleEvent } from '../entity/SaleEvent';
+import { SaleItem } from '../entity/SaleItem';
+import { TaxPayment } from '../entity/TaxPayment';
+import { Amendment } from '../entity/Amendment';
 
 export class TaxService {
   private dataSource: DataSource;
