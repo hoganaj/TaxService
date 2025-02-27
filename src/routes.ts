@@ -3,7 +3,7 @@ import { DataSource } from "typeorm";
 import { SaleEvent, TaxPaymentEvent, Amendment as AmendmentType } from "./types";
 import { TaxService } from "./TaxService";
 import logger from "./logger";
-import { isValidAmendment, isValidTransaction } from "./validation";
+import { isValidAmendment, isValidDate, isValidTransaction } from "./validation";
 
 export function registerRoutes(app: Express, AppDataSource: DataSource) {
 
@@ -56,6 +56,29 @@ export function registerRoutes(app: Express, AppDataSource: DataSource) {
     } catch (error) {
       logger.error({ msg: 'Error processing amendment', error });
       res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  app.get('/tax-position', async (req: Request, res: Response): Promise<any> => {
+    try {
+      const dateParam = req.query.date as string;
+      
+      if (!dateParam || !isValidDate(dateParam)) {
+        logger.error({ msg:'Invalid or missing date parameter', date: dateParam });
+        return res.status(400).json({ error: 'Invalid or missing date parameter' });
+      }
+      
+      logger.info({ msg: 'Querying tax position', date: dateParam });
+      
+      const taxPosition = await taxService.calculateTaxPosition(dateParam);
+      
+      return res.status(200).json({
+        date: dateParam,
+        taxPosition
+      });
+    } catch (error) {
+      logger.error({ msg: 'Error calculating tax position', error });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   });
 
