@@ -31,7 +31,12 @@ export class TaxService {
     });
 
     await saleEventRepo.save(saleEvent);
-    this.logger.info({ msg: 'Sale event saved successfully', invoiceId: event.invoiceId });
+    this.logger.info({ 
+      msg: 'Sale event saved successfully',
+      date: event.date, 
+      invoiceId: event.invoiceId,
+      items: event.items
+    });
   }
 
   async addTaxPayment(event: TaxPaymentEvent): Promise<void> {
@@ -64,8 +69,11 @@ export class TaxService {
     await amendmentRepo.save(newAmendment);
     this.logger.info({ 
       msg: 'Amendment saved successfully',
+      date: amendment.date,
       invoiceId: amendment.invoiceId, 
-      itemId: amendment.itemId 
+      itemId: amendment.itemId,
+      cost: amendment.cost,
+      taxRate: amendment.taxRate
     });
   }
 
@@ -115,7 +123,8 @@ export class TaxService {
         const taxAmount = Math.round(cost * taxRate);
         totalTaxOwed += taxAmount;
         
-        this.logger.debug('Tax calculated for item', { 
+        this.logger.debug({
+          msg: 'Tax calculated for item',
           invoiceId: saleEvent.invoiceId, 
           itemId: item.itemId, 
           cost, 
@@ -129,7 +138,8 @@ export class TaxService {
     const totalTaxPaid = taxPayments.reduce((sum, payment) => sum + payment.amount, 0);
     const taxPosition = totalTaxOwed - totalTaxPaid;
     
-    this.logger.info('Tax position calculated', { 
+    this.logger.info({
+      msg: 'Tax position calculated',  
       date: targetDateStr, 
       totalTaxOwed, 
       totalTaxPaid, 
