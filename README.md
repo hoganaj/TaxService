@@ -11,13 +11,14 @@
 This service is currently only suitable for use in a local environment and is configured to run on port 3000 with endpoints available at `http://localhost:3000`
 
 ### Endpoint Usage:
-You can use your preferred method of sending HTTP requests to the service such as by curl request or a client library e.g. Postman.
+You can use your preferred method of sending HTTP requests to the service such as by curl request or a client library e.g. Postman.  
+The results of your requests can be seen through logs in your terminal. 
 
 ### Endpoints:
 
 ### Sale Event:
 Method: POST  
-Request path: /transactions
+Request path: /transactions  
 Request body:
 ```json
 {
@@ -36,7 +37,7 @@ Request body:
 
 ### Tax Payment:
 Method: POST  
-Request path: /transactions
+Request path: /transactions  
 Request body:
 ```json
 {
@@ -48,7 +49,7 @@ Request body:
 
 ### Amendment:
 Method: PATCH  
-Request path: /sale
+Request path: /sale  
 Request body:
 ```json
 {
@@ -64,7 +65,7 @@ Request body:
 Method: GET  
 Request path: /tax-position  
 Request query parameters:  
-date: Date and time ISO 8601  
+&nbsp;&nbsp;&nbsp;&nbsp; date: Date and time ISO 8601  
 Example: `http://localhost:3000/tax-position?date=2024-02-22T17:29:39Z`
 
 ### Assumptions:
